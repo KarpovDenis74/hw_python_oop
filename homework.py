@@ -37,7 +37,9 @@ class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
         today_remained = self.get_today_remained()
         if today_remained > 0:
-            return f'Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {today_remained} кКал'
+            return ('Сегодня можно съесть что-нибудь ещё, '
+                    'но с общей калорийностью не более '
+                    f'{today_remained} кКал')
         else:
             return 'Хватит есть!'
 
@@ -48,22 +50,22 @@ class CashCalculator(Calculator):
     RUB_RATE = float(1)
 
     def get_today_cash_remained(self, currency):
-        balance = round(self.get_today_remained(), 4)
+        balance = self.get_today_remained()
         if balance == 0:
-            result = 'Денег нет, держись'
-        else:
-            currencies = {
-                'eur': ('Euro', self.EURO_RATE),
-                'usd': ('USD', self.USD_RATE),
-                'rub': ('руб', self.RUB_RATE),
-            }
-            currency_name, currency_rate = currencies[currency]
-            remained = round(balance/currency_rate, 2)
-            if balance > 0:
-                result = f'На сегодня осталось {remained} {currency_name}'
-            elif balance < 0:
-                remained = abs(round(balance/currency_rate, 2))
-                result = f'Денег нет, держись: твой долг - {remained} {currency_name}'
+            return 'Денег нет, держись'
+        currencies = {
+            'eur': ('Euro', self.EURO_RATE),
+            'usd': ('USD', self.USD_RATE),
+            'rub': ('руб', self.RUB_RATE),
+        }
+        currency_name, currency_rate = currencies[currency]
+        remained = round(balance / currency_rate, 2)
+        if balance > 0:
+            result = f'На сегодня осталось {remained} {currency_name}'
+        elif balance < 0:
+            remained = abs(round(balance / currency_rate, 2))
+            result = ('Денег нет, держись: твой долг - '
+                      f'{remained} {currency_name}')
         return result
 
 
